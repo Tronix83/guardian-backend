@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Guardian SOC Terminal</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: "Courier New", monospace;
+    background: radial-gradient(circle at top, #0b1220, #000);
+    color: #00ffcc;
+    overflow-x: hidden;
+}
+
+/* HEADER */
+header {
+    padding: 18px;
+    text-align: center;
+    font-size: 20px;
+    letter-spacing: 2px;
+    color: #00ffcc;
+    text-shadow: 0 0 12px #00ffcc;
+    border-bottom: 1px solid rgba(0,255,204,0.2);
+}
+
+/* GRID */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    padding: 20px;
+}
+
+.stat {
+    background: rgba(0, 255, 204, 0.05);
+    border: 1px solid rgba(0, 255, 204, 0.2);
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 0 12px rgba(0,255,204,0.15);
+}
+
+.label {
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+.value {
+    font-size: 18px;
+    margin-top: 5px;
+    text-shadow: 0 0 8px #00ffcc;
+}
+
+/* FEED */
+#feed {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* CARD */
+.card {
+    padding: 15px;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(0,255,204,0.25);
+    box-shadow: 0 0 15px rgba(0,255,204,0.1);
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: scale(1.01);
+    box-shadow: 0 0 25px rgba(0,255,204,0.25);
+}
+
+/* THREAT COLORS */
+.low { border-left: 4px solid #00ff6a; }
+.medium { border-left: 4px solid #ffb300; }
+.high { border-left: 4px solid #ff5c00; }
+.critical { border-left: 4px solid #ff004c; }
+
+/* GLOW */
+.glow {
+    animation: glow 2s infinite alternate;
+}
+
+@keyframes glow {
+    from { text-shadow: 0 0 6px #00ffcc; }
+    to { text-shadow: 0 0 18px #00ffcc, 0 0 30px #00ffcc; }
+}
+</style>
+</head>
+
+<body>
+
+<header class="glow">
+🛡️ GUARDIAN SOC // LIVE THREAT INTELLIGENCE TERMINAL
+</header>
+
+<div class="grid">
+
+    <div class="stat">
+        <div class="label">ACTIVE STREAM</div>
+        <div id="count" class="value">0</div>
+    </div>
+
+    <div class="stat">
+        <div class="label">LAST RISK SCORE</div>
+        <div id="lastRisk" class="value">-</div>
+    </div>
+
+    <div class="stat">
+        <div class="label">THREAT LEVEL</div>
+        <div id="lastThreat" class="value">-</div>
+    </div>
+
+</div>
+
+
+<script>
+
+const ws = new WebSocket("wss://guardian-backend-oewr.onrender.com/ws");
+
+let count = 0;
+
+socket.onopen = () => {
+    console.log("🧠 SOC TERMINAL CONNECTED");
+};
+
+ws.onmessage = (e) => console.log(e.data);
+
+</script>
+
+</body>
+</html>
