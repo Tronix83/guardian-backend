@@ -4,6 +4,7 @@ from app.soc.ws_manager import manager
 import random
 import asyncio
 from app.services.attacker_intel import analyze_ip
+from app.ai.soc_analyst import analyze_event
 
 
 app = FastAPI()
@@ -20,14 +21,16 @@ app.add_middleware(
 async def soc_stream_simulator():
     while True:
 
-        ip = "192.168.1.10"
-
         intel = analyze_ip(ip)  
 
         event = {
             "type": "attacker_intel",
             "data": intel
         }
+
+        ai_analysis = analyze_event(intel)
+
+        event["ai"] = ai_analysis
 
         print("SOC EVENT SENT:", event)
 

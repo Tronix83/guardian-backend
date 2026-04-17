@@ -134,9 +134,9 @@ ws.onmessage = (event) => {
     console.log("RAW:", event.data);
     const msg = JSON.parse(event.data);
 
-    if (msg.type === "attacker_intel") {
-        console.log("ATTACKER:", msg.data);
-    }
+    console.log("☄️ ATTACK EVENT:", msg.data);
+    console.log("☃️ AI ANALYSIS:", msg.ai.summary);
+    console.log("🔍 RECOMMENDATION:", msg.ai.recommendation);
 };
 
 </script>
