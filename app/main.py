@@ -19,8 +19,21 @@ app.add_middleware(
 
 async def soc_stream_simulator():
     while True:
+
+        ip = "192.168.1.10"
+
+        intel = analyze_ip(ip)  
+
+        event = {
+            "type": "attacker_intel",
+            "data": intel
+        }
+
         print("SOC EVENT SENT:", event)
+
         await manager.broadcast(event)
+
+        await asyncio.sleep(2)
 
         
 #  ROOT 
