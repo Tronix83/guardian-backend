@@ -3,7 +3,9 @@ import requests
 
 def analyze_ip(ip: str):
 
-    geo = {}
+    geo = res.json()
+
+    score = 0
 
     location = {
         "country": geo.get("country_name", "Unknown"),
@@ -17,8 +19,10 @@ def analyze_ip(ip: str):
         
         if res.status_code == 200:
 
+            score = 50 + (hash(ip) % 50)  # Simple deterministic score based on IP hash
+
             geo = res.json()
-            score = geo.get("risk_score", 0)
+
             location = {
                 "country": geo.get("country_name", "Unknown"),
                 "city": geo.get("city", "Unknown"),
