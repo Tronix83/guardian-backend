@@ -1,18 +1,35 @@
 import random
+import requests
 
 
 def analyze_ip(ip: str):
-    fake_locations = [
-        {"country": "US", "city": "New York"},
-        {"country": "RU", "city": "Moscow"},
-        {"country": "CH", "city": "Beijing"},
-        {"country": "DE", "city": "Berlin"},
-        {"country": "BR", "city": "Sao Paulo"},
-    ]
 
-    location = random.choice(fake_locations)
+    try:
 
-    score = random.randint(20, 100)
+        res = requests.get(f"https://ipapi.co/{ip}/json/", timeout=2)
+        geo = res.json()
+
+        location = {
+            "country": geo.get("country_name", "Unknown"),
+            "city": geo.get("city", "Unknown"),
+            "region": geo.get("region", "Unknown"),
+            "org": geo.get("org", "Unknown"),
+        }
+
+    except Exception:
+
+        location = {
+            "country": "Unknown",
+            "city": "Unkown",
+            "region": "Unknown",
+            "org": "Unknown",
+        }
+
+        ip_hash = sum([ord(c) for c in ip])
+
+        score = (ip_hash % 100)
+
+    
 
     if score > 85:
         level = "CRITICAL"
