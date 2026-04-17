@@ -1,7 +1,9 @@
 from fastapi import FastAPI, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 from app.soc.ws_manager import manager 
+import random
 import asyncio
+from app.services.attacker_intel import analyze_ip
 
 
 app = FastAPI()
@@ -15,6 +17,30 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+async def soc_stream_simulator():
+    while True:
+
+        ip_pool = [
+            "192.168.1.10",
+            "10.0.0.5",
+            "185.220.101.1",
+            "45.155.205.233",
+            "103.21.244.0"
+        ]
+
+        ip = random.choice(ip_pool)
+
+        intel = analyze_ip(ip)
+
+        event = {
+            "type": "attacker_intel",
+            "data": intel
+        }
+
+        await manager.broadcast(event)
+
+        await asyncio.sleep(2)
+
 #  ROOT 
 @app.get("/")
 def root():
@@ -27,16 +53,7 @@ def health():
 
 @app.on_event("startup")
 async def startup():
-    async def fake_feed():
-        while True:
-            await manager.broadcast({
-                "type": "soc_event",
-                "risk": 90,
-                "message": "simulated intrusion"
-            })
-            await asyncio.sleep(2)
-
-    asyncio.create_task(fake_feed())
+    asyncio.create_task(soc_stream_simulator())
 
 
 # SIMPLE WEBSOCKET
