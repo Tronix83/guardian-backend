@@ -1,31 +1,33 @@
-import random
 import requests
 
 
 def analyze_ip(ip: str):
 
+    geo = {}
+
+    location = {
+        "country": geo.get("country_name", "Unknown"),
+        "city": geo.get("city", "Unknown"),
+        "region": geo.get("region", "Unknown"),
+        "org": geo.get("org", "Unknown"),
+    }
+
     try:
-
         res = requests.get(f"https://ipapi.co/{ip}/json/", timeout=2)
-        geo = res.json()
-
-        location = {
-            "country": geo.get("country_name", "Unknown"),
-            "city": geo.get("city", "Unknown"),
-            "region": geo.get("region", "Unknown"),
-            "org": geo.get("org", "Unknown"),
-        }
+        
+        if res.status_code == 200:
+            geo = res.json()
+            location = {
+                "country": geo.get("country_name", "Unknown"),
+                "city": geo.get("city", "Unknown"),
+                "region": geo.get("region", "Unknown"),
+                "org": geo.get("org", "Unknown"),
+          }      
 
     except Exception:
+        print("Geo lookup failed for", ip)
 
-        location = {
-            "country": "Unknown",
-            "city": "Unkown",
-            "region": "Unknown",
-            "org": "Unknown",
-        }
-
-        ip_hash = sum([ord(c) for c in ip])
+        ip_hash = hash(ip)
 
         score = (ip_hash % 100)
 
