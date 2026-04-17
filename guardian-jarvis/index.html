@@ -121,13 +121,13 @@ header {
 
 <script>
 
-const ws = new WebSocket("wss://guardian-backend-oewr.onrender.com/ws");
+const ws = new WebSocket("wss://guardian-backend-o3f2.onrender.com/ws");
 
 let count = 0;
 
-socket.onopen = () => {
-    console.log("🧠 SOC TERMINAL CONNECTED");
-};
+ws.onopen = () => (
+    console.log("🧠 SOC TERMINAL CONNECTED")
+);
 
 ws.onmessage = (e) => console.log(e.data);
 
