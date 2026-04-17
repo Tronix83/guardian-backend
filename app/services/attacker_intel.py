@@ -4,7 +4,6 @@ import requests
 def analyze_ip(ip: str):
 
     geo = {}
-    score = 0
 
     location = {
         "country": geo.get("country_name", "Unknown"),
@@ -17,7 +16,9 @@ def analyze_ip(ip: str):
         res = requests.get(f"https://ipapi.co/{ip}/json/", timeout=2)
         
         if res.status_code == 200:
+
             geo = res.json()
+            score = geo.get("risk_score", 0)
             location = {
                 "country": geo.get("country_name", "Unknown"),
                 "city": geo.get("city", "Unknown"),
