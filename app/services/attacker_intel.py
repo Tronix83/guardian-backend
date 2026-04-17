@@ -4,6 +4,7 @@ import requests
 def analyze_ip(ip: str):
 
     geo = {}
+    score = 0
 
     location = {
         "country": geo.get("country_name", "Unknown"),
