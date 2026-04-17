@@ -29,8 +29,7 @@ def analyze_ip(ip: str):
 
         score = (ip_hash % 100)
 
-    
-
+        
     if score > 85:
         level = "CRITICAL"
     elif score > 60:
@@ -54,3 +53,5 @@ def analyze_ip(ip: str):
         "threat_level": level,
         "behavior": behavior
     }
+
+    
